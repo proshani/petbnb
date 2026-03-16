@@ -1,0 +1,95 @@
+services:
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - /srv/observability/loki/config.yml:/etc/loki/config.yml:ro
+      - /srv/observability/loki-data:/loki
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+        compress: "true"
+
+  alloy:
+    image: grafana/alloy:latest
+    privileged: true
+    command: ["run", "/etc/alloy/config.alloy"]
+    volumes:
+      - /srv/observability/alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - /proc:/rootproc:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/containerd/containerd.sock:/run/containerd/containerd.sock:ro
+      - /sys:/sys:ro
+      - /:/rootfs:ro
+      - /dev/disk/:/dev/disk:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on: [loki]
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+        compress: "true"
+
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=7d
+      - --storage.tsdb.path=/prom
+      - --web.enable-lifecycle
+      - --web.enable-remote-write-receiver
+      - --storage.tsdb.wal-compression
+    volumes:
+      - /srv/observability/prometheus:/etc/prometheus:ro
+      - /srv/observability/prom-data:/prom
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+        compress: "true"
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: "AliAli1160"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - /srv/observability/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3030:3000"
+    depends_on: [loki]
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+        compress: "true"
+
+  blackbox:
+    image: prom/blackbox-exporter:latest
+    command: ["--config.file=/etc/blackbox/blackbox.yml"]
+    volumes:
+      - /srv/observability/blackbox/blackbox.yml:/etc/blackbox/blackbox.yml:ro
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+        compress: "true"
+
+volumes:
+  grafana-data:

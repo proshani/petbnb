@@ -1,0 +1,146 @@
+// Discover Docker containers using the host Docker socket
+discovery.docker "all" {
+  host = "unix:///var/run/docker.sock"
+}
+
+// Relabels: keep useful labels for querying in Grafana
+discovery.relabel "logs_labels" {
+  targets = discovery.docker.all.targets
+
+  // container name without leading '/'
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex        = "/(.*)"
+    target_label = "container_name"
+  }
+
+  // compose service & project labels if present
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_service"]
+    target_label  = "compose_service"
+  }
+
+  // normalize blue/green variants into a single logical app label
+  rule {
+    action        = "replace"
+    source_labels = ["__meta_docker_container_label_com_docker_compose_service"]
+    regex         = "nextjs_(blue|green)"
+    target_label  = "app"
+    replacement   = "nextjs"
+  }
+  
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_project"]
+    target_label  = "compose_project"
+  }
+
+  // host identity
+  rule {
+    target_label = "instance"
+    replacement  = constants.hostname
+  }
+}
+
+// Ship logs to Loki
+loki.write "to_loki" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
+
+// Read logs from Docker Engine and forward to Loki
+loki.source.docker "containers" {
+  host          = "unix:///var/run/docker.sock"
+  targets       = discovery.relabel.logs_labels.output
+  relabel_rules = discovery.relabel.logs_labels.rules
+  forward_to    = [loki.write.to_loki.receiver]
+}
+
+// ====== METRICS (host + containers -> Prometheus) ======
+// Host metrics (CPU, mem, net, disk) via embedded exporter:
+prometheus.exporter.unix "host" {}
+
+// Container metrics (per-container CPU/mem/fs) via embedded cadvisor:
+prometheus.exporter.cadvisor "cad" {
+  docker_only = false
+
+  containerd_host      = "/run/containerd/containerd.sock"
+  containerd_namespace = "moby"
+
+  storage_duration = "5m"
+
+  // IMPORTANT if you want compose labels
+  store_container_labels = true
+  allowlisted_container_labels = [
+    "com.docker.compose.project",
+    "com.docker.compose.service",
+    "com.docker.compose.container-number",
+  ]
+}
+
+prometheus.scrape "scrape_unix" {
+  targets = prometheus.exporter.unix.host.targets
+  scrape_interval = "15s"
+  forward_to = [prometheus.remote_write.to_prom.receiver]
+  job_name = "host"
+}
+
+// Cadvisor metrics scrape:
+prometheus.scrape "scrape_cadvisor" {
+  targets = prometheus.exporter.cadvisor.cad.targets
+  scrape_interval = "15s"
+  job_name = "cadvisor"
+  forward_to      = [prometheus.relabel.cadvisor_labels.receiver]
+}
+
+// Relabel cAdvisor metrics for cleaner service names
+prometheus.relabel "cadvisor_labels" {
+  forward_to = [prometheus.remote_write.to_prom.receiver]
+
+  // service="nginx" from image="docker.io/library/nginx:stable-alpine"
+  rule {
+    action        = "replace"
+    source_labels = ["image"]
+    regex         = ".*/([^:/]+)(:.*)?$"
+    target_label  = "service"
+    replacement   = "$1"
+  }
+
+  // optional: shorten container name (strip leading slash)
+  rule {
+    action        = "replace"
+    source_labels = ["name"]
+    regex         = "/(.*)"
+    target_label  = "container_name"
+    replacement   = "$1"
+  }
+
+  // normalize nextjs_blue/nextjs_green → app="nextjs"
+  rule {
+    action        = "replace"
+    source_labels = ["container_label_com_docker_compose_service"]
+    regex         = "^nextjs_(blue|green)$"
+    target_label  = "app"
+    replacement   = "nextjs"
+  }
+}
+
+prometheus.scrape "blackbox_scraper" {
+  targets = [
+    {"__address__" = "blackbox:9115", "instance" = "i8pixel.com"},
+  ]
+
+
+  metrics_path = "/probe"
+  params = { "target" = ["https://i8pixel.com/"], "module" = ["http_2xx_strict_tls"] }
+
+  scrape_interval = "30s"
+  scrape_timeout  = "15s"
+
+  job_name = "blackbox_http"
+  forward_to = [ prometheus.remote_write.to_prom.receiver ]
+}
+// Store metrics in local Prometheus:
+prometheus.remote_write "to_prom" {
+  endpoint { url = "http://prometheus:9090/api/v1/write" }
+}
