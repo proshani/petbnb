@@ -1,0 +1,167 @@
+name: next-build-and-deploy
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: ${{ vars.DOCKERHUB_USERNAME }}/petbnb-next
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=sha,format=short
+
+      - name: Export env
+        uses: 0ndt/envfile@v2
+        with:
+          secrets: ${{ toJSON(vars) }}
+
+      - name: Verify .env file exists and has DATABASE_URL
+        run: |
+          set -euo pipefail
+          ls -la .env
+          grep -q '^DATABASE_URL=' .env && echo "DATABASE_URL key present in .env" || (echo "DATABASE_URL missing from .env" && exit 1)
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ vars.DOCKERHUB_TOKEN }}
+
+      - name: Build & push (Next.js)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runner
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          secret-files: |
+            envfile=${{ github.workspace }}/.env
+        env:
+          DOCKER_BUILDKIT: "1"
+
+      - name: Cleanup env
+        if: always()
+        run: rm -f .env
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Normalize SSH key from VARS into a file
+        run: |
+          mkdir -p ~/.ssh
+          cat > ~/.ssh/gha.raw <<'EOF'
+          ${{ vars.SSH_KEY }}
+          EOF
+
+          sed -e '1s/^"//' -e '$s/"$//' ~/.ssh/gha.raw > ~/.ssh/gha.nq
+          tr -d '\r' < ~/.ssh/gha.nq > ~/.ssh/gha
+          chmod 600 ~/.ssh/gha
+
+          echo "bytes: $(wc -c < ~/.ssh/gha)"
+          ssh-keygen -lf ~/.ssh/gha || { echo "ssh-keygen cannot parse key"; exit 1; }
+
+      - name: Deploy (blue/green Next.js)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key_path: /home/runner/.ssh/gha
+          port: 22
+          command_timeout: 30m
+          script_stop: false
+          script: |
+            set -euxo pipefail
+            cd /srv/app
+
+            NGINX_CONT="$(docker compose ps -q nginx)"
+            if [ -z "$NGINX_CONT" ]; then
+              echo "❌ nginx container is not running"
+              exit 1
+            fi
+
+            BLUE_RUNNING=$(docker ps -q -f name=petbnb-next-blue -f status=running)
+            GREEN_RUNNING=$(docker ps -q -f name=petbnb-next-green -f status=running)
+
+            if [[ "$BLUE_RUNNING" != "" ]]; then
+              ACTIVE_SVC="nextjs_blue"
+              ACTIVE_CONT="petbnb-next-blue"
+              NEW_SVC="nextjs_green"
+              NEW_CONT="petbnb-next-green"
+              NEW_UPSTREAM_CONF='set $active_upstream "nextjs_green:3000";'
+            elif [[ "$GREEN_RUNNING" != "" ]]; then
+              ACTIVE_SVC="nextjs_green"
+              ACTIVE_CONT="petbnb-next-green"
+              NEW_SVC="nextjs_blue"
+              NEW_CONT="petbnb-next-blue"
+              NEW_UPSTREAM_CONF='set $active_upstream "nextjs_blue:3000";'
+            else
+              echo "⚠️ Cold start — deploying blue"
+              ACTIVE_SVC=""
+              ACTIVE_CONT=""
+              NEW_SVC="nextjs_blue"
+              NEW_CONT="petbnb-next-blue"
+              NEW_UPSTREAM_CONF='set $active_upstream "nextjs_blue:3000";'
+            fi
+
+            echo "Active: $ACTIVE_SVC ($ACTIVE_CONT) -> Deploying: $NEW_SVC ($NEW_CONT)"
+
+            docker compose pull "${NEW_SVC}"
+            docker compose up -d --no-deps "${NEW_SVC}"
+
+            due=$((SECONDS+300))
+            ready=0
+            while [ $SECONDS -lt $due ]; do
+              status="$(docker inspect -f '{{.State.Health.Status}}' "$NEW_CONT" 2>/dev/null || echo starting)"
+              echo "health=$status"
+              if [ "$status" = "healthy" ]; then
+                ready=1
+                break
+              fi
+              sleep 5
+            done
+
+            if [ "$ready" -ne 1 ]; then
+              echo "❌ $NEW_CONT never became healthy. Recent logs:"
+              docker logs --tail=200 "$NEW_CONT" || true
+              exit 1
+            fi
+
+            cp /srv/app/nginx/upstream-active.conf /srv/app/nginx/upstream-active.backup
+            echo "$NEW_UPSTREAM_CONF" > /srv/app/nginx/upstream-active.conf
+
+            if ! docker exec "$NGINX_CONT" nginx -t; then
+              echo "❌ nginx config test failed. Rolling back."
+              cp /srv/app/nginx/upstream-active.backup /srv/app/nginx/upstream-active.conf
+              docker exec "$NGINX_CONT" nginx -t
+              docker exec "$NGINX_CONT" nginx -s reload
+              exit 1
+            fi
+
+            docker exec "$NGINX_CONT" nginx -s reload
+
+            if [ -n "$ACTIVE_SVC" ]; then
+              OLD_IMG_ID="$(docker inspect -f '{{.Image}}' "$ACTIVE_CONT" 2>/dev/null || true)"
+              docker compose stop "${ACTIVE_SVC}" || true
+              docker compose rm -f "${ACTIVE_SVC}" || true
+              if [ -n "$OLD_IMG_ID" ]; then
+                docker image rm -f "$OLD_IMG_ID" || true
+              fi
+            fi
+
+            echo "✅ Blue/green flip complete: now serving ${NEW_SVC}"
