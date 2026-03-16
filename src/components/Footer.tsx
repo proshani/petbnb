@@ -1,164 +1,138 @@
-import Link from "next/link"
+"use client"
 
 export default function Footer() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+  }
+
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+    <footer className="bg-charcoal text-white/55">
+      <div className="max-w-7xl mx-auto px-6 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🐾</span>
-              <span className="text-xl font-bold text-orange-400">PetBnB</span>
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-serif text-2xl font-bold text-white tracking-widest">LUXE</span>
+              <div className="flex flex-col ml-1">
+                <span className="text-gold text-[10px] font-medium tracking-[0.35em] uppercase leading-none">
+                  Toronto
+                </span>
+                <span className="text-white/30 text-[9px] tracking-[0.2em] uppercase leading-tight">
+                  Real Estate
+                </span>
+              </div>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Connecting loving pet owners with trusted sitters in every neighborhood.
+            <p className="text-sm leading-relaxed mb-6 max-w-xs mt-4">
+              Toronto&apos;s most trusted luxury real estate agency. Exceptional properties,
+              extraordinary service, since 2009.
             </p>
-          </div>
-
-          {/* Explore */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Explore</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/#services" className="hover:text-orange-400 transition-colors">
-                  Dog Walking
-                </Link>
-              </li>
-              <li>
-                <Link href="/#services" className="hover:text-orange-400 transition-colors">
-                  Overnight Sitting
-                </Link>
-              </li>
-              <li>
-                <Link href="/#services" className="hover:text-orange-400 transition-colors">
-                  Drop-In Visits
-                </Link>
-              </li>
-              <li>
-                <Link href="/#services" className="hover:text-orange-400 transition-colors">
-                  Doggy Daycare
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Pet Owners */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Pet Owners</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/signup" className="hover:text-orange-400 transition-colors">
-                  Create Account
-                </Link>
-              </li>
-              <li>
-                <Link href="/#how-it-works" className="hover:text-orange-400 transition-colors">
-                  How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/#sitters" className="hover:text-orange-400 transition-colors">
-                  Browse Sitters
-                </Link>
-              </li>
-              <li>
-                <Link href="/login" className="hover:text-orange-400 transition-colors">
-                  Log In
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Pet Sitters */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Pet Sitters</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/signup" className="hover:text-orange-400 transition-colors">
-                  Become a Sitter
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-orange-400 transition-colors">
-                  Sitter Resources
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-orange-400 transition-colors">
-                  Background Check
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-orange-400 transition-colors">
-                  Earnings Guide
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company & Support */}
-          <div>
-            <div className="mb-6">
-              <h4 className="text-white font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="#" className="hover:text-orange-400 transition-colors">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-orange-400 transition-colors">
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-orange-400 transition-colors">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-orange-400 transition-colors">
-                    Press
-                  </Link>
-                </li>
-              </ul>
+            <div className="flex gap-3 mb-6">
+              {[
+                { label: "in", name: "LinkedIn" },
+                { label: "ig", name: "Instagram" },
+                { label: "tw", name: "Twitter" },
+                { label: "fb", name: "Facebook" },
+              ].map((s) => (
+                <button
+                  key={s.label}
+                  aria-label={s.name}
+                  className="w-9 h-9 border border-white/15 hover:border-gold hover:text-gold flex items-center justify-center text-xs uppercase transition-all duration-200"
+                >
+                  {s.label}
+                </button>
+              ))}
             </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="#" className="hover:text-orange-400 transition-colors">
-                    Help Center
-                  </Link>
+          </div>
+
+          {/* Properties */}
+          <div>
+            <h4 className="text-white text-xs font-bold tracking-[0.25em] uppercase mb-5">
+              Properties
+            </h4>
+            <ul className="space-y-3 text-sm">
+              {[
+                "Buy a Home",
+                "Sell a Home",
+                "New Developments",
+                "Luxury Estates",
+                "Investment Properties",
+              ].map((item) => (
+                <li key={item}>
+                  <button
+                    onClick={() => scrollTo("properties")}
+                    className="hover:text-gold transition-colors duration-200 text-left"
+                  >
+                    {item}
+                  </button>
                 </li>
-                <li>
-                  <Link href="#" className="hover:text-orange-400 transition-colors">
-                    Safety
-                  </Link>
+              ))}
+            </ul>
+          </div>
+
+          {/* Neighbourhoods */}
+          <div>
+            <h4 className="text-white text-xs font-bold tracking-[0.25em] uppercase mb-5">
+              Neighbourhoods
+            </h4>
+            <ul className="space-y-3 text-sm">
+              {[
+                "Yorkville",
+                "Rosedale",
+                "Forest Hill",
+                "King West",
+                "The Beaches",
+                "Bridle Path",
+              ].map((item) => (
+                <li key={item}>
+                  <button
+                    onClick={() => scrollTo("neighborhoods")}
+                    className="hover:text-gold transition-colors duration-200 text-left"
+                  >
+                    {item}
+                  </button>
                 </li>
-                <li>
-                  <Link href="#" className="hover:text-orange-400 transition-colors">
-                    Contact Us
-                  </Link>
-                </li>
-              </ul>
-            </div>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="text-white text-xs font-bold tracking-[0.25em] uppercase mb-5">
+              Toronto Office
+            </h4>
+            <ul className="space-y-4 text-sm">
+              <li>
+                <p className="text-white/30 text-[10px] uppercase tracking-wider mb-1">Address</p>
+                <p>100 King Street West</p>
+                <p>Suite 5600</p>
+                <p>Toronto, ON M5X 1C9</p>
+              </li>
+              <li>
+                <p className="text-white/30 text-[10px] uppercase tracking-wider mb-1">Phone</p>
+                <p>+1 (416) 555-0100</p>
+              </li>
+              <li>
+                <p className="text-white/30 text-[10px] uppercase tracking-wider mb-1">Email</p>
+                <p>hello@luxe.ca</p>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <p>© 2026 PetBnB. All rights reserved.</p>
+        {/* Bottom bar */}
+        <div className="border-t border-white/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/25">
+          <div>
+            <p>© 2026 LUXE Toronto Real Estate. All rights reserved.</p>
+            <p className="mt-0.5 text-white/15">
+              Licensed under the Real Estate and Business Brokers Act (REBBA), Ontario.
+            </p>
+          </div>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-orange-400 transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="hover:text-orange-400 transition-colors">
-              Terms of Service
-            </Link>
-            <Link href="#" className="hover:text-orange-400 transition-colors">
-              Cookie Policy
-            </Link>
+            {["Privacy Policy", "Terms of Service", "FINTRAC Policy"].map((item) => (
+              <button key={item} className="hover:text-gold transition-colors duration-200">
+                {item}
+              </button>
+            ))}
           </div>
         </div>
       </div>

@@ -1,16 +1,23 @@
 import type { Metadata } from "next"
-import { Geist } from "next/font/google"
+import { Playfair_Display, Inter } from "next/font/google"
 import "./globals.css"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+})
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 })
 
 export const metadata: Metadata = {
-  title: "PetBnB — Your Pet's Home Away From Home",
+  title: "LUXE Toronto — Luxury Real Estate",
   description:
-    "Find verified, loving pet sitters and dog walkers in your neighborhood. Book with confidence on PetBnB.",
+    "Toronto's premier luxury real estate agency. Discover exceptional properties in Yorkville, Rosedale, Forest Hill, King West and beyond.",
 }
 
 export default function RootLayout({
@@ -20,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} antialiased`}>{children}</body>
+      <body className={`${playfair.variable} ${inter.variable} antialiased`}>{children}</body>
     </html>
   )
 }
