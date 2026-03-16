@@ -29,6 +29,9 @@ export interface Agent {
   photo: string
   rating: number
   deals: number
+  award?: string
+  instagram?: string
+  featured?: boolean
 }
 
 export interface Neighborhood {

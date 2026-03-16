@@ -11,35 +11,45 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-2xl font-bold text-white tracking-widest">LUXE</span>
-              <div className="flex flex-col ml-1">
-                <span className="text-gold text-[10px] font-medium tracking-[0.35em] uppercase leading-none">
-                  Toronto
+            <div className="mb-3">
+              <span className="font-serif text-xl font-bold text-white tracking-[0.06em]">
+                Richmondhill Real Estate
+              </span>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-gold text-[9px] font-medium tracking-[0.32em] uppercase leading-none">
+                  Luxury Real Estate
                 </span>
-                <span className="text-white/30 text-[9px] tracking-[0.2em] uppercase leading-tight">
-                  Real Estate
-                </span>
+                <span className="text-white/20 text-[8px]">·</span>
+                <span className="text-white/35 text-[9px] tracking-[0.2em] uppercase">GTA</span>
               </div>
             </div>
-            <p className="text-sm leading-relaxed mb-6 max-w-xs mt-4">
-              Toronto&apos;s most trusted luxury real estate agency. Exceptional properties,
+            <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 px-3 py-1.5 mb-4">
+              <span className="text-gold text-xs">🏆</span>
+              <span className="text-gold/80 font-medium" style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+                Million Dollar Award Winner 2025
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed mb-6 max-w-xs">
+              Toronto&apos;s trusted luxury real estate expert. Exceptional properties,
               extraordinary service, since 2009.
             </p>
             <div className="flex gap-3 mb-6">
               {[
-                { label: "in", name: "LinkedIn" },
-                { label: "ig", name: "Instagram" },
-                { label: "tw", name: "Twitter" },
-                { label: "fb", name: "Facebook" },
+                { label: "ig", name: "Instagram", href: "https://www.instagram.com/sean_shahvari/" },
+                { label: "in", name: "LinkedIn", href: "#" },
+                { label: "tw", name: "Twitter", href: "#" },
+                { label: "fb", name: "Facebook", href: "#" },
               ].map((s) => (
-                <button
+                <a
                   key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={s.name}
                   className="w-9 h-9 border border-white/15 hover:border-gold hover:text-gold flex items-center justify-center text-xs uppercase transition-all duration-200"
                 >
                   {s.label}
-                </button>
+                </a>
               ))}
             </div>
           </div>
@@ -113,7 +123,7 @@ export default function Footer() {
               </li>
               <li>
                 <p className="text-white/30 text-[10px] uppercase tracking-wider mb-1">Email</p>
-                <p>hello@luxe.ca</p>
+                <p>amin@aminshahvari.ca</p>
               </li>
             </ul>
           </div>
@@ -122,9 +132,9 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/25">
           <div>
-            <p>© 2026 LUXE Toronto Real Estate. All rights reserved.</p>
+            <p>© 2025 Richmondhill Real Estate Real Estate. All rights reserved.</p>
             <p className="mt-0.5 text-white/15">
-              Licensed under the Real Estate and Business Brokers Act (REBBA), Ontario.
+              Million Dollar Award Winner 2025 · Licensed under REBBA, Ontario · RECO Certified.
             </p>
           </div>
           <div className="flex gap-6">

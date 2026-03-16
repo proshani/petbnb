@@ -15,7 +15,7 @@ export const neighborhoods: Neighborhood[] = [
     name: "Rosedale",
     city: "Toronto, ON",
     image:
-      "https://images.unsplash.com/photo-1580587771525-4cad42481cd5?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=800&q=80",
     propertyCount: 34,
     avgPrice: 3500000,
   },
@@ -33,7 +33,7 @@ export const neighborhoods: Neighborhood[] = [
     name: "King West",
     city: "Toronto, ON",
     image:
-      "https://images.unsplash.com/photo-1502920917128-1aa500764bbb?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=800&q=80",
     propertyCount: 67,
     avgPrice: 1400000,
   },
@@ -42,7 +42,7 @@ export const neighborhoods: Neighborhood[] = [
     name: "The Beaches",
     city: "Toronto, ON",
     image:
-      "https://images.unsplash.com/photo-1613490493576-4aa9523e5c2a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
     propertyCount: 41,
     avgPrice: 1900000,
   },

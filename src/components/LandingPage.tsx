@@ -11,6 +11,7 @@ import NeighborhoodsSection from "@/components/sections/NeighborhoodsSection"
 import TestimonialsSection from "@/components/sections/TestimonialsSection"
 import AgentsSection from "@/components/sections/AgentsSection"
 import CTABanner from "@/components/sections/CTABanner"
+import InstagramSection from "@/components/sections/InstagramSection"
 import PropertyModal from "@/components/PropertyModal"
 
 const defaultFilters: Filters = {
@@ -75,6 +76,7 @@ export default function LandingPage() {
 
   return (
     <>
+
       <HeroSection filters={filters} onFiltersChange={setFilters} />
       <PropertiesSection
         properties={filteredProperties}
@@ -90,6 +92,7 @@ export default function LandingPage() {
       <NeighborhoodsSection onNeighborhoodClick={handleNeighborhoodClick} />
       <TestimonialsSection />
       <AgentsSection />
+      <InstagramSection />
       <CTABanner />
 
       {selectedProperty && (

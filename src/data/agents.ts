@@ -2,16 +2,20 @@ import type { Agent } from "@/types/realestate"
 
 export const agents: Agent[] = [
   {
-    id: "1",
-    name: "Alexandra Chen",
-    title: "Senior Luxury Specialist",
-    specialization: "Yorkville & Forest Hill",
-    phone: "+1 (416) 555-0142",
-    email: "a.chen@luxe.ca",
+    id: "amin",
+    name: "Richmondhill Real Estate",
+    title: "Principal Broker & Luxury Specialist",
+    specialization: "GTA Luxury · Yorkville · Rosedale · Forest Hill",
+    phone: "+1 (416) 555-0100",
+    email: "amin@aminshahvari.ca",
+    // Replace this URL with Amin's actual photo
     photo:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
     rating: 5.0,
-    deals: 87,
+    deals: 200,
+    award: "Million Dollar Award Winner 2025",
+    instagram: "sean_shahvari",
+    featured: true,
   },
   {
     id: "2",
@@ -19,7 +23,7 @@ export const agents: Agent[] = [
     title: "Partner & Investment Advisor",
     specialization: "Rosedale & Bridle Path",
     phone: "+1 (416) 555-0198",
-    email: "j.whitmore@luxe.ca",
+    email: "j.whitmore@aminshahvari.ca",
     photo:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
     rating: 4.9,
@@ -31,7 +35,7 @@ export const agents: Agent[] = [
     title: "Market Director",
     specialization: "King West & Corktown",
     phone: "+1 (416) 555-0167",
-    email: "s.rodriguez@luxe.ca",
+    email: "s.rodriguez@aminshahvari.ca",
     photo:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
     rating: 4.8,
@@ -43,7 +47,7 @@ export const agents: Agent[] = [
     title: "Estate Sales Director",
     specialization: "Lawrence Park & Moore Park",
     phone: "+1 (416) 555-0223",
-    email: "m.thompson@luxe.ca",
+    email: "m.thompson@aminshahvari.ca",
     photo:
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
     rating: 4.9,

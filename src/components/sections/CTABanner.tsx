@@ -52,27 +52,25 @@ export default function CTABanner() {
 
       <div
         ref={ref}
-        className={`relative z-10 max-w-3xl mx-auto px-6 text-center transition-all duration-900 ${
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
+        className={`relative z-10 max-w-3xl mx-auto px-6 text-center transition-all duration-900 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
       >
         <div
-          className={`h-px bg-gold mx-auto mb-7 transition-all duration-1000 ${
-            inView ? "w-14" : "w-0"
-          }`}
+          className={`h-px bg-gold mx-auto mb-7 transition-all duration-1000 ${inView ? "w-14" : "w-0"
+            }`}
         />
         <p className="text-gold text-xs tracking-[0.45em] uppercase font-medium mb-5">
-          Begin Your Journey
+          Book a Consultation
         </p>
         <h2 className="font-serif font-bold text-white mb-5">
-          <span className="block text-4xl sm:text-5xl lg:text-6xl">Ready to Find Your</span>
+          <span className="block text-4xl sm:text-5xl lg:text-6xl">Work with Toronto&apos;s</span>
           <span className="block text-4xl sm:text-5xl lg:text-6xl">
-            Toronto <span className="text-gradient-gold italic">Dream Home?</span>
+            <span className="text-gradient-gold italic">Award-Winning</span> Realtor
           </span>
         </h2>
         <p className="text-white/55 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Join over 1,200 Toronto families who trusted LUXE with Canada&apos;s most significant
-          purchase. Our team is ready to guide you — from first viewing to closing day.
+          Join 200+ GTA families who trusted Richmondhill Real Estate — Million Dollar Award Winner 2025 —
+          with Canada&apos;s most significant purchase. From first showing to closing day.
         </p>
 
         {!submitted ? (
@@ -110,9 +108,9 @@ export default function CTABanner() {
         {/* Contact info */}
         <div className="flex items-center justify-center gap-8 mt-12 pt-8 border-t border-white/10">
           {[
-            { label: "Toronto Office", value: "+1 (416) 555-0100" },
-            { label: "Email", value: "hello@luxe.ca" },
-            { label: "Hours", value: "Mon–Sat 9am–7pm" },
+            { label: "Direct Line", value: "+1 (416) 555-0100" },
+            { label: "Email", value: "amin@aminshahvari.ca" },
+            { label: "Instagram", value: "@sean_shahvari" },
           ].map((item) => (
             <div key={item.label} className="text-center">
               <p className="text-white/30 text-xs tracking-wider uppercase mb-0.5">{item.label}</p>

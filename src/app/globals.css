@@ -279,3 +279,99 @@ body {
   transform: translateY(-6px);
   box-shadow: 0 24px 60px rgba(28, 28, 30, 0.14);
 }
+
+/* ── Hide Scrollbar ──────────────────────────────────── */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Custom Cursor ───────────────────────────────────── */
+@media (hover: hover) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
+
+/* ── Intro Screen Keyframes ──────────────────────────── */
+@keyframes introLetterUp {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes introLineExpand {
+  from {
+    width: 0px;
+    opacity: 0;
+  }
+  to {
+    width: 64px;
+    opacity: 1;
+  }
+}
+
+@keyframes introFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Word Reveal (Hero) ──────────────────────────────── */
+@keyframes wordRevealUp {
+  from {
+    transform: translateY(108%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Vertical Line Draw ──────────────────────────────── */
+@keyframes drawLineDown {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ── Ticker Scroll ───────────────────────────────────── */
+@keyframes tickerScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── Eyebrow Fade ────────────────────────────────────── */
+@keyframes eyebrowReveal {
+  from {
+    opacity: 0;
+    letter-spacing: 0.15em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.45em;
+  }
+}
