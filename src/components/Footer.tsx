@@ -11,27 +11,22 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="mb-3">
-              <span className="font-serif text-xl font-bold text-white tracking-[0.06em]">
-                Richmondhill Real Estate
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-serif text-2xl font-bold text-white tracking-widest">
+                LUXE
               </span>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-gold text-[9px] font-medium tracking-[0.32em] uppercase leading-none">
-                  Luxury Real Estate
+              <div className="flex flex-col ml-1">
+                <span className="text-gold text-[10px] font-medium tracking-[0.35em] uppercase leading-none">
+                  Toronto
                 </span>
-                <span className="text-white/20 text-[8px]">·</span>
-                <span className="text-white/35 text-[9px] tracking-[0.2em] uppercase">GTA</span>
+                <span className="text-white/30 text-[9px] tracking-[0.2em] uppercase leading-tight">
+                  Real Estate
+                </span>
               </div>
             </div>
-            <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 px-3 py-1.5 mb-4">
-              <span className="text-gold text-xs">🏆</span>
-              <span className="text-gold/80 font-medium" style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-                Million Dollar Award Winner 2025
-              </span>
-            </div>
-            <p className="text-sm leading-relaxed mb-6 max-w-xs">
-              Toronto&apos;s trusted luxury real estate expert. Exceptional properties,
-              extraordinary service, since 2009.
+            <p className="text-sm leading-relaxed mb-6 max-w-xs mt-4">
+              Toronto&apos;s premier luxury real estate platform. Exceptional properties,
+              extraordinary service across the GTA since 2009.
             </p>
             <div className="flex gap-3 mb-6">
               {[
@@ -132,9 +127,9 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/25">
           <div>
-            <p>© 2025 Richmondhill Real Estate Real Estate. All rights reserved.</p>
+            <p>© 2025 LUXE Toronto Real Estate. All rights reserved.</p>
             <p className="mt-0.5 text-white/15">
-              Million Dollar Award Winner 2025 · Licensed under REBBA, Ontario · RECO Certified.
+              Licensed under the Real Estate and Business Brokers Act (REBBA), Ontario.
             </p>
           </div>
           <div className="flex gap-6">

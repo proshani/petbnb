@@ -15,9 +15,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Richmondhill Real Estate — Luxury Real Estate · GTA",
+  title: "LUXE Toronto — GTA Luxury Real Estate",
   description:
-    "Richmondhill Real Estate — Million Dollar Award Winner 2025 & Trusted Realtor in the GTA. Luxury properties in Yorkville, Rosedale, Forest Hill, Bridle Path and beyond.",
+    "Toronto's premier luxury real estate platform. Discover exceptional properties in Yorkville, Rosedale, Forest Hill, King West and beyond. TREB & RECO certified.",
 }
 
 export default function RootLayout({

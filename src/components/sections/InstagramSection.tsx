@@ -2,8 +2,8 @@
 
 import { useInView } from "@/hooks/useInView"
 
-const INSTAGRAM_HANDLE = "sean_shahvari"
-const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`
+const INSTAGRAM_HANDLE = "luxe.toronto"
+const INSTAGRAM_URL = `https://www.instagram.com/`
 
 const posts = [
   {

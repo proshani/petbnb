@@ -29,20 +29,17 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <button onClick={() => scrollTo("hero")} className="flex items-center gap-3 group">
-          <div className="flex flex-col items-start">
-            <span className="font-serif text-xl font-bold text-white tracking-[0.08em] group-hover:text-gold transition-colors duration-300 leading-none">
-              Richmondhill Real Estate
+        <button onClick={() => scrollTo("hero")} className="flex items-center gap-2 group">
+          <span className="font-serif text-2xl font-bold text-white tracking-[0.18em] group-hover:text-gold transition-colors duration-300 leading-none">
+            LUXE
+          </span>
+          <div className="flex flex-col ml-0.5">
+            <span className="text-gold/80 font-medium leading-none" style={{ fontSize: "9px", letterSpacing: "0.38em", textTransform: "uppercase" }}>
+              Toronto
             </span>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-gold/80 font-medium leading-none" style={{ fontSize: "9px", letterSpacing: "0.32em", textTransform: "uppercase" }}>
-                Luxury Real Estate
-              </span>
-              <span className="text-white/20 text-[8px]">·</span>
-              <span className="text-white/35 leading-none" style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase" }}>
-                GTA
-              </span>
-            </div>
+            <span className="text-white/30 leading-tight" style={{ fontSize: "8px", letterSpacing: "0.22em", textTransform: "uppercase" }}>
+              Real Estate
+            </span>
           </div>
         </button>
 

@@ -5,204 +5,117 @@ import { agents } from "@/data/agents"
 
 export default function AgentsSection() {
   const { ref, inView } = useInView()
-  const principal = agents.find((a) => a.featured)
-  const team = agents.filter((a) => !a.featured)
 
   return (
-    <section id="agents" className="py-28 bg-white">
+    <section id="agents" className="py-28 bg-charcoal relative overflow-hidden">
+      {/* Section number watermark */}
+      <div
+        aria-hidden="true"
+        className="absolute top-8 right-10 font-serif font-bold text-white/[0.025] pointer-events-none select-none leading-none"
+        style={{ fontSize: "clamp(60px, 8vw, 120px)" }}
+      >
+        05
+      </div>
+
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div
+          className={`mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+        >
           <div
-            className={`h-px bg-gold mx-auto mb-6 transition-all duration-1000 ${inView ? "w-14" : "w-0"}`}
+            className={`h-px bg-gold mb-6 transition-all duration-1000 ${inView ? "w-14" : "w-0"}`}
           />
-          <p className="text-gold text-xs tracking-[0.4em] uppercase font-medium mb-3">
-            Your Trusted Realtor
+          <p
+            className="text-gold font-medium mb-3"
+            style={{ fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase" }}
+          >
+            Our Team
           </p>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-charcoal mb-4">
-            Meet <span className="italic text-gradient-gold">Richmondhill Real Estate</span>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white">
+            Toronto&apos;s Best{" "}
+            <span className="italic text-gradient-gold">Real Estate Agents</span>
           </h2>
-          <p className="text-mid-gray max-w-lg mx-auto text-base leading-relaxed">
-            Award-winning luxury real estate expert serving Toronto&apos;s most prestigious
-            neighbourhoods across the GTA.
+          <p className="text-white/40 max-w-lg text-base leading-relaxed mt-4">
+            Handpicked for deep knowledge of Toronto&apos;s luxury market, professional
+            integrity, and a track record of exceptional client outcomes.
           </p>
         </div>
 
-        <div ref={ref}>
-          {/* ── Principal — featured full-width card ── */}
-          {principal && (
+        {/* Grid */}
+        <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border border-white/[0.07]">
+          {agents.map((agent, i) => (
             <div
-              className={`mb-10 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              key={agent.id}
+              className={`group relative overflow-hidden transition-all duration-700 border-r border-white/[0.07] last:border-r-0 ${
+                inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+              style={{ transitionDelay: `${i * 110}ms` }}
             >
-              <div
-                className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden bg-charcoal"
-                style={{ borderRadius: "12px" }}
-              >
-                {/* Photo */}
-                <div className="relative h-[420px] lg:h-auto overflow-hidden">
-                  <img
-                    src={principal.photo}
-                    alt={principal.name}
-                    className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105"
-                  />
-                  <div className="absolute top-5 left-5 bg-gold text-charcoal text-[10px] font-bold px-3 py-1.5 tracking-[0.18em] uppercase">
-                    🏆 {principal.award}
-                  </div>
-                  <a
-                    href={`https://www.instagram.com/${principal.instagram}/`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute bottom-5 left-5 flex items-center gap-2 bg-black/60 backdrop-blur-sm border border-white/20 px-3 py-2 hover:border-gold/60 transition-all duration-200"
+              {/* Photo */}
+              <div className="relative h-80 overflow-hidden">
+                <img
+                  src={agent.photo}
+                  alt={agent.name}
+                  loading="lazy"
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                />
+                {/* Dark overlay on hover */}
+                <div className="absolute inset-0 bg-charcoal/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Hover content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 p-6 text-center">
+                  <p className="text-white/60 text-xs mb-1 tracking-wider uppercase">
+                    {agent.specialization}
+                  </p>
+                  <p className="text-white text-sm font-medium mb-4">{agent.phone}</p>
+                  <button
+                    onClick={() =>
+                      document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" })
+                    }
+                    className="btn-gold text-charcoal text-xs font-bold tracking-[0.2em] uppercase px-6 py-2.5"
                   >
-                    <span className="text-white text-sm">📸</span>
-                    <span className="text-white/80 text-xs font-medium">
-                      @{principal.instagram}
-                    </span>
-                  </a>
+                    Book Consultation
+                  </button>
                 </div>
 
-                {/* Info */}
-                <div className="p-10 lg:p-14 flex flex-col justify-center">
-                  <p
-                    className="text-gold font-medium mb-2"
-                    style={{
-                      fontSize: "10px",
-                      letterSpacing: "0.38em",
-                      textTransform: "uppercase",
-                    }}
+                {/* Rating chip — always visible */}
+                <div className="absolute top-4 right-4 bg-gold text-charcoal text-xs font-bold px-2.5 py-1 flex items-center gap-1">
+                  <span>★</span>
+                  <span>{agent.rating.toFixed(1)}</span>
+                </div>
+              </div>
+
+              {/* Info */}
+              <div className="p-6 bg-charcoal border-t border-white/[0.07]">
+                <h3 className="font-serif text-lg font-bold text-white mb-0.5">{agent.name}</h3>
+                <p
+                  className="text-gold mb-1"
+                  style={{ fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 600 }}
+                >
+                  {agent.title}
+                </p>
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/[0.07]">
+                  <div>
+                    <p
+                      className="text-white/25"
+                      style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase" }}
+                    >
+                      Deals
+                    </p>
+                    <p className="text-white font-bold text-sm">{agent.deals}</p>
+                  </div>
+                  <button
+                    onClick={() =>
+                      document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" })
+                    }
+                    className="text-gold hover:text-white text-xs font-bold tracking-[0.15em] uppercase transition-colors duration-200 flex items-center gap-1.5"
                   >
-                    Principal Broker
-                  </p>
-                  <h3 className="font-serif text-4xl font-bold text-white mb-1">
-                    {principal.name}
-                  </h3>
-                  <p className="text-white/50 text-sm mb-6">{principal.specialization}</p>
-
-                  <div className="flex flex-col gap-3 mb-8">
-                    {[
-                      { icon: "🏆", text: "Million Dollar Award Winner 2025" },
-                      { icon: "✅", text: "Trusted Realtor in the GTA" },
-                      { icon: "⭐", text: "5.0 Rating · 200+ Deals Closed" },
-                      {
-                        icon: "📍",
-                        text: "Toronto · Yorkville · Rosedale · Forest Hill · Bridle Path",
-                      },
-                    ].map((c) => (
-                      <div key={c.text} className="flex items-start gap-3">
-                        <span className="text-base mt-0.5 flex-shrink-0">{c.icon}</span>
-                        <span className="text-white/65 text-sm leading-snug">{c.text}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-4 mb-8 pt-6 border-t border-white/10">
-                    {[
-                      { v: "200+", l: "Deals Closed" },
-                      { v: "5.0★", l: "Client Rating" },
-                      { v: "15 Yrs", l: "Experience" },
-                    ].map((s) => (
-                      <div key={s.l}>
-                        <p className="text-gold font-serif font-bold text-2xl leading-none">
-                          {s.v}
-                        </p>
-                        <p
-                          className="text-white/35 mt-1"
-                          style={{
-                            fontSize: "10px",
-                            letterSpacing: "0.15em",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {s.l}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      onClick={() =>
-                        document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" })
-                      }
-                      className="btn-gold text-charcoal font-bold tracking-[0.18em] uppercase px-8 py-3.5 text-sm flex-1"
-                    >
-                      Book a Consultation
-                    </button>
-                    <a
-                      href={`https://www.instagram.com/${principal.instagram}/`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border border-white/20 text-white/70 hover:border-gold hover:text-gold font-medium tracking-[0.12em] uppercase px-6 py-3.5 text-sm transition-all duration-200 text-center"
-                    >
-                      Instagram
-                    </a>
-                  </div>
+                    Contact <span>→</span>
+                  </button>
                 </div>
               </div>
             </div>
-          )}
-
-          {/* ── Supporting Team ── */}
-          <div>
-            <p
-              className="text-mid-gray/60 mb-5"
-              style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase" }}
-            >
-              The Team
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-              {team.map((agent, i) => (
-                <div
-                  key={agent.id}
-                  className={`group bg-warm-white overflow-hidden transition-all duration-700 card-hover ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                    }`}
-                  style={{ transitionDelay: `${(i + 1) * 120}ms`, borderRadius: "10px" }}
-                >
-                  <div className="relative h-56 overflow-hidden">
-                    <img
-                      src={agent.photo}
-                      alt={agent.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute bottom-3 right-3 bg-gold text-charcoal text-xs font-bold px-2 py-1 flex items-center gap-1">
-                      <span>★</span>
-                      <span>{agent.rating.toFixed(1)}</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-serif text-base font-bold text-charcoal mb-0.5">
-                      {agent.name}
-                    </h3>
-                    <p
-                      className="text-gold mb-1"
-                      style={{
-                        fontSize: "9px",
-                        letterSpacing: "0.15em",
-                        textTransform: "uppercase",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {agent.title}
-                    </p>
-                    <p className="text-mid-gray text-xs">{agent.specialization}</p>
-                    <div className="flex items-center justify-between pt-3 mt-3 border-t border-light-gray">
-                      <span className="text-charcoal font-bold text-sm">{agent.deals} deals</span>
-                      <button
-                        onClick={() =>
-                          document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" })
-                        }
-                        className="text-charcoal hover:text-gold text-xs font-bold tracking-[0.12em] uppercase transition-colors duration-200"
-                      >
-                        Contact →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
