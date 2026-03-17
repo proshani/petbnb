@@ -375,3 +375,44 @@ body {
     letter-spacing: 0.45em;
   }
 }
+
+/* ── Booking Form Utilities ──────────────────────────── */
+.form-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  padding: 12px 14px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  border-radius: 0;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.form-input:focus {
+  border-color: rgba(201, 168, 76, 0.6);
+}
+
+.form-input option {
+  background: #1c1c1e;
+}
+
+.form-error {
+  color: rgba(248, 113, 113, 0.85);
+  font-size: 11px;
+  margin-top: 4px;
+}

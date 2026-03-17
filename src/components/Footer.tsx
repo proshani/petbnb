@@ -30,7 +30,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-3 mb-6">
               {[
-                { label: "ig", name: "Instagram", href: "https://www.instagram.com/sean_shahvari/" },
+                { label: "ig", name: "Instagram", href: "https://www.instagram.com/" },
                 { label: "in", name: "LinkedIn", href: "#" },
                 { label: "tw", name: "Twitter", href: "#" },
                 { label: "fb", name: "Facebook", href: "#" },
@@ -118,7 +118,7 @@ export default function Footer() {
               </li>
               <li>
                 <p className="text-white/30 text-[10px] uppercase tracking-wider mb-1">Email</p>
-                <p>amin@aminshahvari.ca</p>
+                <p>hello@luxe.ca</p>
               </li>
             </ul>
           </div>

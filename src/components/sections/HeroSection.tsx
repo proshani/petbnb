@@ -154,13 +154,26 @@ export default function HeroSection({ filters, onFiltersChange }: HeroSectionPro
             </select>
           </div>
 
-          <button
-            onClick={handleSearch}
-            className="btn-gold mt-2 w-full text-charcoal font-bold tracking-[0.18em] uppercase py-4 text-sm"
-            style={{ borderRadius: 0 }}
-          >
-            Search Properties
-          </button>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={handleSearch}
+              className="btn-gold flex-1 text-charcoal font-bold tracking-[0.18em] uppercase py-4 text-sm"
+              style={{ borderRadius: 0 }}
+            >
+              Search
+            </button>
+            <button
+              onClick={() => {
+                const btn = document.querySelector("[data-booking-trigger]") as HTMLButtonElement
+                btn?.click()
+              }}
+              className="border border-gold/60 text-gold hover:bg-gold/10 font-bold tracking-[0.14em] uppercase py-4 px-5 text-sm transition-all duration-200 flex items-center gap-2 flex-shrink-0"
+              style={{ borderRadius: 0 }}
+            >
+              <span>📅</span>
+              <span className="hidden sm:inline">Book Consult</span>
+            </button>
+          </div>
         </div>
 
         {/* Bottom stats */}
